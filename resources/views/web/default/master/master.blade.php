@@ -21,191 +21,243 @@
     {!! $head ?? '' !!}
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
-    <!--============ Google Fonts ======-->
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,300" rel="stylesheet" type="text/css"/>
-    <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet" type="text/css"/>
 
-    <!--========= Style Sheets ============-->
-    <link rel="stylesheet" href="{{url('frontend/assets/css/bootstrap.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/pixeden-icons.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/owl.carousel.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/animations.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/dl-menu.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/main.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/renato.css')}}"/>
-    <link rel="stylesheet" href="{{url('frontend/assets/css/font-awesome.min.css')}}" />
-
-    <script src="{{url('frontend/assets/js/modernizr-2.6.2-respond-1.1.0.min.js')}}"></script>
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{$configuracoes->getfaveicon()}}" type="image/x-icon" />
+
+    <link id="default-css" href="{{url('frontend/assets/css/style.css')}}" rel="stylesheet" media="all" />
+    <link id="shortcodes-css" href="{{url('frontend/assets/css/shortcodes.css')}}" rel="stylesheet" media="all" />
+    <link id="fancy-box" href="{{url('frontend/assets/css/jquery.fancybox.css')}}" rel="stylesheet" media="all" />
+    <link id="layer-slider" href="{{url('frontend/assets/css/layerslider.css')}}" rel="stylesheet" media="all" />
+    <link href="{{url('frontend/assets/css/prettyPhoto.css')}}" rel="stylesheet" media="all" />
+
+    <link href="{{url('frontend/assets/css/responsive.css')}}" rel="stylesheet" media="all" />
+    <link href="{{url('frontend/assets/css/pace-theme-loading-bar.css')}}" rel="stylesheet" media="all" />
+    <link href="{{url('frontend/assets/css/animations.css')}}" rel="stylesheet" media="all" />
+
+    <link rel="stylesheet" href="{{url('frontend/assets/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{url('frontend/assets/css/flaticon.css')}}">
+    <link rel="stylesheet" href="{{url('frontend/assets/css/renato.css')}}">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic" rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,700" rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700" rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Crete+Round" rel='stylesheet' type='text/css'>
 
     @hasSection('css')
         @yield('css')
     @endif
 </head>
 <body>
-    <div class="xv-overFlow">
-        <!--Header -->
-        <header class="style1 docHeader">  
-            <nav id="sticktop" class="navbar navbar-default" style="background-color:rgba(0, 0, 0, 0.7);">
-              <div class="container">
-                <div class="navbar-header clearfix">
-                    <a class="navbar-brand" href="{{route('web.home')}}">
-                        <img src="{{$configuracoes->getLogomarca()}}" alt="{{$configuracoes->nomedosite}}"/>
-                    </a>
-                </div>
-                <div class="social-wrap">
-                    <ul class="social-list">
-                        @if ($configuracoes->facebook)
-                            <li><a target="_blank" href="{{$configuracoes->facebook}}" title="Facebook" class="icon-facebook"></a></li>
-                        @endif
-                        @if ($configuracoes->twitter)
-                            <li><a target="_blank" href="{{$configuracoes->twitter}}" title="Twitter" class="icon-twitter"></a></li>
-                        @endif
-                        @if ($configuracoes->instagram)
-                            <li><a target="_blank" href="{{$configuracoes->instagram}}" title="Instagram" class="icon-instagram"></a></li>
-                        @endif
-                        @if ($configuracoes->linkedin)
-                            <li><a target="_blank" href="{{$configuracoes->linkedin}}" title="linkedin" class="icon-linkedin"></a></li>
-                        @endif 
-                    </ul>
-                </div>  
-                  
-                <div id="dl-menu" class="xv-menuwrapper responsive-menu">
-                    <button class="dl-trigger">Abrir Menu</button>                    
-                    <ul class="dl-menu clearfix">
-                        <li><a href="{{route('web.blog.artigos')}}">Blog</a></li>
-                        @if (!empty($Paginas) && $Paginas->count() > 0 )
-							<li class="parent"> <a >Páginas &nbsp;<img src="{{url('frontend/assets/images/seta.png')}}" /></a>
-								<ul class="lg-submenu">
-									@foreach ($Paginas as $page)										
-                                        <li> <a href="{{route('web.pagina', [ 'slug' => $page->slug ])}}"><i class="fa fa-angle-double-right"></i> {{$page->titulo}}</a></li>						
-									@endforeach																	
-								</ul>
-							</li>
-						@endif 
-                        @if (!empty($catnoticias) && $catnoticias->count() > 0 )
-							<li class="parent"> <a >Modalidades &nbsp;<img src="{{url('frontend/assets/images/seta.png')}}" /></a>
-								<ul class="lg-submenu">
-									@foreach ($catnoticias as $catn)
-										@if ($catn->countposts() >= 1)
-											<li> <a href="{{route('web.blog.categoria', [ 'slug' => $catn->slug ])}}"><i class="fa fa-angle-double-right"></i> {{$catn->titulo}}</a></li>
-										@endif										
-									@endforeach																	
-								</ul>
-							</li>
-						@endif 
-                        <li><a href="{{route('web.atendimento')}}">Fale Conosco</a></li>       
-                    </ul>
-                </div>
-              </div>
-            </nav>                  
-        </header> 
-        <!-- Header -->
-        
-        @yield('content')
-        
-        <!--Footer-->
-        <footer>
-            <div class="container">
-                <div class="footer_inner">
-                    @if (!empty($versiculo))
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-lg-12">                	
-                                <div class="widget widget_text">
-                                    {{$versiculo}}
-                                </div>
-                            </div>                
-                        </div>
-                    @endif
+    <div class="wrapper">
+        <div class="inner-wrapper">
 
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-5 col-lg-4">
-                            <div class="widget widget">
-                                {{$configuracoes->descricao}}
+            <div id="header-wrapper">
+                <header id="header">
+                    <div class="top-bar">
+                        <div class="container">
+                            <div class="dt-sc-contact-info">
+                                @if ($configuracoes->whatsapp)
+                                    <p>
+                                        <i class="fa fa-whatsapp">
+                                        Dúvidas? <span><a href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->nomedosite)}}">WhatsApp: {{$configuracoes->whatsapp}}</a></span>
+                                    </p>                       
+                                @endif                                
+                            </div>
+                            <div class="top-right">
+                                <ul>                                     
+                                    <p>
+                                        <span style="margin-right: 10px;">Olá, </span>  
+                                        <a title="Minha Conta" href=""> 
+                                            <span class="fa fa-user"></span> Minha Conta 
+                                        </a>
+                                        <span style="margin-left: 10px;">
+                                            <a href="">Sair</a>
+                                        </span>
+                                    </p>                                    
+                                    <li>
+                                        <a title="Login" href="">
+                                            <span class="fa fa-sign-in"></span>Logar
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a title="Cadastrar-se" href="">
+                                            <span class="fa fa-user"></span> Cadastre-se 
+                                        </a>
+                                    </li> 
+                                </ul>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="main-menu-container">
+                        <div class="main-menu">
+                            <div id="logo">
+                                <a title="{{$configuracoes->nomedosite}}" href="{{route('web.home')}}">
+                                    <img title="{{$configuracoes->nomedosite}}" alt="{{$configuracoes->nomedosite}}" src="{{$configuracoes->getLogomarca()}}">
+                                </a>
+                            </div>
+                            <div id="primary-menu">
+                                <div class="dt-menu-toggle" id="dt-menu-toggle">Menu<span class="dt-menu-toggle-icon"></span></div>
+                                <nav id="main-menu">
+                                    <ul id="menu-main-menu" class="menu">                                        
+                                        <li class="menu-item-simple-parent menu-item-depth-0"><a target="" href=""> $link['nome'];</a>
+                                            <ul class="sub-menu">                                            
+                                                <li><a target="" href=""> $sublink['nome'];</a></li>                                            
+                                            </ul>  
+                                            <a class="dt-menu-expand">+</a>
+                                        </li>                                        
+                                        <li class="menu-item-simple-parent menu-item-depth-0"><a title="Blog" href="">Planos</a></li>
+                                        <li class="menu-item-simple-parent menu-item-depth-0"><a title="Blog" href="{{route('web.blog.artigos')}}">Blog</a></li>
+                                        <li class="menu-item-simple-parent menu-item-depth-0"><a title="Atendimento" href="{{route('web.atendimento')}}">Atendimento</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
 
-                    <div class="widget widget_menu">
-                        <nav class="sitemap">
-                            <ul>
-                                <li><a href="{{route('web.politica')}}">Política de Privacidade</a></li>
-                                <li><a href="{{route('web.atendimento')}}">Fale Conosco</a></li>
-                                <li><a href="{{route('web.pesquisa')}}">Pesquisar no site</a></li>
-                            </ul>
-                        </nav>
+            @yield('content')
+
+            <footer id="footer">
+                <div class="footer-widgets-wrapper">
+                    <div class="container">
+                        <div class="column dt-sc-one-fourth first">
+                            <aside class="widget widget_text">
+                                <div class="textwidget">
+                                    <h3 class="widgettitle">
+                                        <span class="fa fa-user"></span>{{$configuracoes->nomedosite}}
+                                    </h3>
+                                    {{$configuracoes->descricao}}
+                                </div>
+                            </aside>
+                        </div>
+                        <div class="column dt-sc-one-fourth space">
+                            <aside class="widget widget_text">
+                                <h3 class="widgettitle">
+                                    <span class="fa fa-link"></span>Acesse
+                                </h3>
+                                <div class="textwidget">
+                                    <ul>
+                                        <li><a href="{{route('web.politica')}}">Política de Privacidade</a></li>
+                                        <li><a href="{{route('web.atendimento')}}">Fale Conosco</a></li>
+                                        <li><a href="{{route('web.pesquisa')}}">Pesquisar no site</a></li>
+                                    </ul>
+                                </div>
+                            </aside>
+                        </div>
+                        
+                        <div class="column dt-sc-one-half  space ">
+                            <div class="fb-page" data-href="https://www.facebook.com/sportplantriathlon/" data-tabs="" data-width="380" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"><blockquote cite="https://www.facebook.com/sportplantriathlon/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/sportplantriathlon/">Sportplan Triathlon</a></blockquote></div>
+                        </div>
                     </div>
-                                
-                    <div class="widget widget_newsletter">                
-                        <form action="" method="post" class="form_newsletter j_submitnewsletter">                    
-                            <div class="row">
-                                <div class="col-md-12" style="padding: 0px;">
-                                    @csrf                                
-                                    <div id="js-newsletter-result"></div>
-                                    <!-- HONEYPOT -->
-                                    <input type="hidden" class="noclear" name="bairro" value="" />
-                                    <input type="text" class="noclear" style="display: none;" name="cidade" value="" />
-                                    <input type="hidden" class="noclear" name="status" value="1" />
-                                    <input type="hidden" class="noclear" name="nome" value="#Cadastrado pelo Site" />  
+                    <div class="social-media-container">
+                        <div class="social-media">
+                            <div class="container">
+                                <div class="dt-sc-contact-info dt-phone">
+                                    @if ($configuracoes->whatsapp)
+                                            <p>
+                                                <i class="fa fa-whatsapp"><a href="{{\App\Helpers\WhatsApp::getNumZap($configuracoes->whatsapp ,'Atendimento '.$configuracoes->nomedosite)}}">WhatsApp: {{$configuracoes->whatsapp}}</a>
+                                            </p>                       
+                                    @endif
                                 </div>
-                            </div>
-                            <div class="row form_hide">
-                                <div class="col-xs-12 col-sm-8 col-md-10 col-lg-10" style="padding: 0px;">
-                                    <input style="width: 100%;" type="text" name="email" placeholder="Receba Novidades por E-mail"/>
-                                </div>
-                                <div class="col-xs-12 col-sm-4 col-md-2 col-lg-2">
-                                    <button type="submit" id="js-subscribe-btn" class="b_cadastro" style="width: 100%;">Cadastrar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="copyrights">
-                        <div class="row">
-                            <div class="col-xs-12 col-md-6">
-                                  <ul class="social-list">
+                                <ul class="dt-sc-social-icons">
                                     @if ($configuracoes->facebook)
-                                        <li><a target="_blank" href="{{$configuracoes->facebook}}" title="Facebook" class="icon-facebook"></a></li>
+                                        <li class="facebook"><a target="_blank" href="{{$configuracoes->facebook}}" title="Facebook" ><i class="fa fa-facebook"></i></a></li>
                                     @endif
                                     @if ($configuracoes->twitter)
-                                        <li><a target="_blank" href="{{$configuracoes->twitter}}" title="Twitter" class="icon-twitter"></a></li>
+                                        <li class="twitter"><a target="_blank" href="{{$configuracoes->twitter}}" title="Twitter" ><i class="fa fa-twitter"></i></a></li>
                                     @endif
                                     @if ($configuracoes->instagram)
-                                        <li><a target="_blank" href="{{$configuracoes->instagram}}" title="Instagram" class="icon-instagram"></a></li>
+                                        <li class="instagram"><a target="_blank" href="{{$configuracoes->instagram}}" title="Instagram" ><i class="fa fa-instagram"></i></a></li>
                                     @endif
                                     @if ($configuracoes->linkedin)
-                                        <li><a target="_blank" href="{{$configuracoes->linkedin}}" title="linkedin" class="icon-linkedin"></a></li>
-                                    @endif                                    
-                                </ul>  
-                            </div><!--column-->
-                            <div class="col-xs-12 col-md-6">
-                                <div class="rights">
-                                    &copy; {{$configuracoes->ano_de_inicio}} - {{date('Y')}} <strong>{{$configuracoes->nomedosite}}</strong>. - Todos os direitos reservados.
-                                    <p class="font-accent">
-                                        <span class="small text-silver-dark">Feito com <i style="color:red;" class="fa fa-heart"></i> por <a style="color:#fff;" target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></span>
-                                    </p>
-                                </div>
+                                        <li class="linkedin"><a target="_blank" href="{{$configuracoes->linkedin}}" title="linkedin" ><i class="fa fa-linkedin"></i></a></li>
+                                    @endif                                        
+                                </ul>
                             </div>
                         </div>
-                    </div><!--copyrights--> 
+                    </div>
                 </div>
-            </div>
-        </footer>
-        <!--Footer-->
+                <div class="copyright">
+                    <div class="container">
+                        <ul class="footer-links">
+                            <!--<li><a href="#"> About Us </a></li>
+                            <li><a href="#"> Help Centre </a></li>
+                            <li><a href="#"> Site Map </a></li>-->
+                        </ul>
+                        <p>&copy; {{$configuracoes->ano_de_inicio}} - {{date('Y')}} <strong>{{$configuracoes->nomedosite}}</strong>. - Todos os direitos reservados.</p>
+                        <span class="small text-silver-dark">Feito com <i style="color:red;" class="fa fa-heart"></i> por <a style="color:#fff;" target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
     </div>
-    
+
     <!--=================================
     Script Source
     =================================-->
     <script src="{{url('frontend/assets/js/jquery.js')}}"></script>
-    <script src="{{url('frontend/assets/js/jquery.dlmenu.js')}}"></script>
-    <script src="{{url('frontend/assets/js/owl.carousel.min.js')}}"></script>
-    <script src="{{url('frontend/assets/js/jquery.sticky.js')}}"></script>
-    <script src="{{url('frontend/assets/js/jquery.inview.js')}}"></script>
-    <script src="{{url('frontend/assets/js/main.js')}}"></script>
-    <script src="{{url('frontend/assets/js/bootstrap.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery-migrate.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/modernizr.custom.js')}}"></script>
+    <script>
+    var mytheme_urls = {
+            stickynav : 'enable'
+    };
+    </script>
+
+    <!-- Scripts -->
+    <script src="{{url('frontend/assets/js/jquery.plugins.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.nicescroll.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.fancybox.pack.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.carouFredSel-6.2.1-packed.js')}}"></script>
+    <script src="{{url('frontend/assets/js/pace.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.isotope.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.prettyPhoto.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.tipTip.minified.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.tabs.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.ui.totop.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery-transit-modified.js')}}"></script>
+    <script src="{{url('frontend/assets/js/layerslider.kreaturamedia.jquery.js')}}"></script>
+    <script src="{{url('frontend/assets/js/greensock.js')}}"></script>
+    <script src="{{url('frontend/assets/js/layerslider.transitions.js')}}"></script>
+    <script>
+        var lsjQuery = jQuery;
+    </script>
+    <script> 
+        lsjQuery(document).ready(function() { 
+            if(typeof lsjQuery.fn.layerSlider == "undefined") { 
+                lsShowNotice('layerslider_5','jquery'); 
+            } else { 
+                lsjQuery("#layerslider_5").layerSlider({
+                    responsiveUnder: 1240, 
+                    layersContainer: 1170, 
+                    skinsPath: 'js/layerslider/skins/'
+                }) 
+            } 
+        }); 
+    </script>
+    <script src="{{url('frontend/assets/js/retina.js')}}"></script>
+    <script src="{{url('frontend/assets/js/twitter/jquery.tweet.min.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.validate.min.js')}}"></script>
+
+    <script src="{{url('frontend/assets/js/custom.js')}}"></script>
+    <script src="{{url('frontend/assets/js/jquery.maskedinput.min.js')}}"></script>
+
+    <!-- jQuery REMODAL -->
+    <link rel="stylesheet" href="{{url('frontend/assets/js/remodal/remodal.css')}}">
+    <link rel="stylesheet" href="{{url('frontend/assets/js/remodal/remodal-default-theme.css')}}">
+    <script src="{{url('frontend/assets/js/remodal/remodal.js')}}"></script>
+
+    <!--jquery form-->
+    <script src="{{url('frontend/assets/js/jquery.form.js')}}"></script>
 
     <script>
         $(function () {
