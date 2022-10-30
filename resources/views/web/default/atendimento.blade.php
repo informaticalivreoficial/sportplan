@@ -1,62 +1,53 @@
 @extends("web.{$configuracoes->template}.master.master")
 
 @section('content')
-    
-<div class="mainWrapper page">
+<div class="site-section bg-light">
     <div class="container">
-        <div class="pageContentArea">
-            <main>
-                <header id="alertatendiento">
-                    <h1>Atendimento</h1>
-                </header>
-                
-                <div class="pageContent">            					
-                    <form action="" method="post" autocomplete="off" class="j_formsubmit">                
-                        @csrf
-                        <div id="js-contact-result"></div>
-                        <!-- HONEYPOT -->
-                        <input type="hidden" class="noclear" name="bairro" value="" />
-                        <input type="text" class="noclear" style="display: none;" name="cidade" value="" />
-                        <div class="row form_hide">
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                                <label for="fe-name" class="required">Seu Nome</label>
-                                <input id="fe-name" name="nome" type="text"/>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-lg-6">
-                                <label for="fe-email" class="required">Seu E-mail</label>
-                                <input id="fe-email" name="email" type="text"/>
-                            </div>
-                        </div> 
-                        
-                        <div class="row form_hide">
-                            <div class="col-xs-12 col-md-12">
-                                <label for="fe-message" class="required">Sua Mensagem</label>
-                                <textarea id="fe-message" name="mensagem"></textarea>
-                            </div>
-                         </div>  
-                        
-                        <p class="text-center form_hide">
-                            <button class="btn btn-default" id="js-contact-btn" type="submit" name="submit">Enviar Agora</button>
-                        </p>
-                        
-                    </form>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title mb-5">
+                    <h2>Atendimento</h2>
                 </div>
-            </main>
-        </div>
+                <form method="post" action="" class="j_formsubmit" autocomplete="off">  
+                        @csrf                  
+                        <div class="row">
+                            <div class="col-md-12 form-group">                                
+                                <div id="js-contact-result"></div>
+                                <!-- HONEYPOT -->
+                                <input type="hidden" class="noclear" name="bairro" value="" />
+                                <input type="text" class="noclear" style="display: none;" name="cidade" value="" />
+                            </div>
+                            <div class="col-md-6 form-group form_hide">
+                                <label for="fname">Nome</label>
+                                <input type="text" id="fname" name="nome" class="form-control form-control-lg">
+                            </div>
+                            <div class="col-md-6 form-group form_hide">
+                                <label for="eaddress">Email</label>
+                                <input type="text" id="eaddress" name="email" class="form-control form-control-lg">
+                            </div>
+                        </div>                       
+                        <div class="row form_hide">
+                            <div class="col-md-12 form-group">
+                                <label for="message">Mensagem</label>
+                                <textarea name="mensagem" id="message" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row form_hide">
+                            <div class="col-12">
+                                <input type="submit" id="js-contact-btn" value="Enviar Agora" class="btn btn-primary py-3 px-5">
+                            </div>
+                        </div>                    
+                </form>
+            </div>            
+        </div>      
     </div>
-    </div>
+</div> 
 @endsection
 
 @section('js')
 <script>
     $(function () {
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         $('.j_formsubmit').submit(function (){
             var form = $(this);
             var dataString = $(form).serialize();
@@ -68,7 +59,7 @@
                 dataType: 'JSON',
                 beforeSend: function(){
                     form.find("#js-contact-btn").attr("disabled", true);
-                    form.find('#js-contact-btn').html("Carregando...");                
+                    form.find('#js-contact-btn').val("Carregando...");                
                     form.find('.alert').fadeOut(500, function(){
                         $(this).remove();
                     });
@@ -88,13 +79,12 @@
                 },
                 complete: function(resposta){
                     form.find("#js-contact-btn").attr("disabled", false);
-                    form.find('#js-contact-btn').html("Enviar Agora");                                
+                    form.find('#js-contact-btn').val("Enviar Agora");                                
                 }
             });
 
             return false;
         });
-
     });
 </script>   
 @endsection

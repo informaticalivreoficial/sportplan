@@ -31,20 +31,17 @@ class WebController extends Controller
 
     public function home()
     {
-        $noticiasMain = Post::orderBy('created_at', 'DESC')->where('tipo', 'artigo')
+        $noticias = Post::orderBy('created_at', 'DESC')->where('tipo', 'noticia')
                         ->postson()
-                        ->limit(6)
+                        ->limit(4)
                         ->get();
-        $noticiasSidebar = Post::orderBy('created_at', 'DESC')->where('tipo', 'artigo')
+        $artigos = Post::orderBy('created_at', 'DESC')->where('tipo', 'artigo')
                         ->postson()
-                        ->skip(6)
-                        ->take(7)
+                        ->limit(4)
                         ->get();
-        $noticiasVistos = Post::where('created_at', '>', Carbon::now()->subMonths(6))
-                        ->where('tipo', 'artigo')
-                        ->postson()
-                        ->limit(3)
-                        ->get();        
+          
+        //Parceiros
+        $parceiros = Parceiro::orderBy('views', 'DESC')->available()->limit(6)->get();     
         
         $head = $this->seo->render($this->configService->getConfig()->nomedosite ?? 'Informática Livre',
             $this->configService->getConfig()->descricao ?? 'Informática Livre desenvolvimento de sistemas web desde 2005',
@@ -54,9 +51,9 @@ class WebController extends Controller
 
 		return view('web.'.$this->configService->getConfig()->template.'.home',[
             'head' => $head,
-            'noticiasMain' => $noticiasMain,
-            'noticiasSidebar' => $noticiasSidebar,
-            'noticiasVistos' => $noticiasVistos
+            'noticias' => $noticias,
+            'parceiros' => $parceiros,
+            'artigos' => $artigos,
 		]);
     }
 
@@ -107,14 +104,18 @@ class WebController extends Controller
     {
         $post = Post::where('slug', $request->slug)->postson()->first();
         
-        $categorias = CatPost::orderBy('titulo', 'ASC')
-            ->where('tipo', 'artigo')
-            ->get();
         $postsMais = Post::orderBy('views', 'DESC')
             ->where('id', '!=', $post->id)
             ->where('tipo', 'artigo')
             ->limit(4)
             ->postson()
+            ->get();
+        $postsTags = Post::orderBy('views', 'DESC')
+            ->where('tipo', 'artigo')
+            ->where('tags', '!=', '')
+            ->where('id', '!=', $post->id)
+            ->postson()
+            ->limit(11)
             ->get();
         
         $post->views = $post->views + 1;
@@ -129,8 +130,8 @@ class WebController extends Controller
         return view('web.'.$this->configService->getConfig()->template.'.blog.artigo', [
             'head' => $head,
             'post' => $post,
-            'postsMais' => $postsMais,
-            'categorias' => $categorias
+            'postsTags' => $postsTags,
+            'postsMais' => $postsMais
         ]);
     }
 
@@ -145,7 +146,14 @@ class WebController extends Controller
             ->where('tipo', 'noticia')
             ->limit(6)
             ->postson()
-            ->get();        
+            ->get();  
+        $postsTags = Post::orderBy('views', 'DESC')
+            ->where('tipo', 'noticia')
+            ->where('tags', '!=', '')
+            ->where('id', '!=', $post->id)
+            ->postson()
+            ->limit(11)
+            ->get();      
         
         $post->views = $post->views + 1;
         $post->save();        
@@ -160,6 +168,7 @@ class WebController extends Controller
             'head' => $head,
             'post' => $post,
             'parceiros' => $parceiros,
+            'postsTags' => $postsTags,
             'postsMais' => $postsMais
         ]);
     }
