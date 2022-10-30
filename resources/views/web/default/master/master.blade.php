@@ -101,7 +101,7 @@
                             <nav class="site-navigation position-relative text-right" role="navigation">
                                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                                     <li class="active">
-                                    <a href="index.html" class="nav-link text-left">Home</a>
+                                        <a href="{{route('web.home')}}" class="nav-link text-left">Início</a>
                                     </li>                                    
                                     <li>
                                         <a title="Blog" href="{{route('web.blog.artigos')}}" class="nav-link text-left">Blog</a>

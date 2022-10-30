@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\EmailController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\CatPostController;
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\ParceiroController;
 use App\Http\Controllers\Admin\SitemapController;
@@ -129,6 +130,16 @@ Route::prefix('admin')->middleware('auth')->group( function(){
     Route::get('posts/artigos', [PostController::class, 'index'])->name('posts.artigos');
     Route::get('posts/noticias', [PostController::class, 'index'])->name('posts.noticias');
     Route::get('posts/paginas', [PostController::class, 'index'])->name('posts.paginas');
+
+    //****************************** Menu *******************************************/
+    Route::get('menus/set-status', [MenuController::class, 'menuSetStatus'])->name('menus.menuSetStatus');
+    Route::delete('menus/deleteon', [MenuController::class, 'deleteon'])->name('menus.deleteon');
+    Route::get('menus/delete', [MenuController::class, 'delete'])->name('menus.delete');
+    Route::put('menus/{id}', [MenuController::class, 'update'])->name('menus.update');
+    Route::get('menus/{id}/edit', [MenuController::class, 'edit'])->name('menus.edit');
+    Route::get('menus/create', [MenuController::class, 'create'])->name('menus.create');
+    Route::post('menus/store', [MenuController::class, 'store'])->name('menus.store');
+    Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
 
     //*********************** Email **********************************************/
     Route::get('email/suporte', [EmailController::class, 'suporte'])->name('email.suporte');

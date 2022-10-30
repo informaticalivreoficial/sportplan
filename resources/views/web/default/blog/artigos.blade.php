@@ -1,44 +1,42 @@
 @extends("web.{$configuracoes->template}.master.master")
 
 @section('content')
-<div class="container">
-	<div class="pageContentArea archive-content">
-        <header class="h">
-            <h2 style="color: #fff;">{{(!empty($posts) && $posts[0]->tipo == 'noticia' ? 'Notícias' : 'Blog')}}</h2>
-        </header>  
-        @if(!empty($posts) && $posts->count() > 0)
-            <div class="row"> 
-                @foreach($posts as $post)
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" style="padding: 3%;">
-                    <article style="min-height: 370px;">
-                        <figure>
-                            <img src="{{$post->cover()}}" alt="{{$post->titulo}}">
-                        </figure>
-                        <header>
-                            <h5 style="text-transform: lowercase;">
-                                <a href="{{route(($post->tipo == 'noticia' ? 'web.noticia' : 'web.blog.artigo'), [ 'slug' => $post->slug ])}}">
-                                    {{$post->titulo}}
-                                </a>
-                            </h5>
-                        </header>
-                        {!! Words($post->content, 21) !!} 
-                        <b><a href="{{route(($post->tipo == 'noticia' ? 'web.noticia' : 'web.blog.artigo'), [ 'slug' => $post->slug ])}}" class="readMore">Leia+</a></b>
-                    </article>
-                </div>
-                @endforeach
-            </div>
-            
-            <div class="row" style="padding: 20px;">
-                <div class="col-sm-12">
-                    @if (isset($filters))
-                        {{ $posts->appends($filters)->links() }}
-                    @else
-                        {{ $posts->links() }}
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title">
+                            <h2>{{(!empty($posts) && $posts[0]->tipo == 'noticia' ? 'Notícias' : 'Blog')}}</h2>
+                    </div>
+                    @if($posts->count() && $posts->count() > 0)                 
+                            @foreach($posts as $post)
+                                <div class="post-entry-2 d-flex">
+                                    <div class="thumbnail order-md-2" style="background-image: url('{{$post->cover()}}')"></div>
+                                    <div class="contents order-md-1 pl-0">
+                                        <h2><a href="{{route(($post->tipo == 'artigo' ? 'web.blog.artigo' : 'web.noticia'), ['slug' => $post->slug] )}}">{{$post->titulo}}</a></h2>
+                                        <p class="mb-3">{!! Words($post->content, 19) !!}</p>
+                                        <div class="post-meta">
+                                            <span class="d-block"><a href="{{route('web.blog.categoria', [ 'slug' => $post->categoriaObject->slug ])}}">{{$post->categoriaObject->titulo}}</a></span>
+                                            <span class="date-read">{{ Carbon\Carbon::parse($post->created_at)->formatLocalized('%d, %B %Y') }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        
+                        
+                        <div class="row" style="padding: 20px;">
+                            <div class="col-sm-12">
+                                @if (isset($filters))
+                                    {{ $posts->appends($filters)->links() }}
+                                @else
+                                    {{ $posts->links() }}
+                                @endif
+                            </div>                
+                        </div>
                     @endif
-                </div>                
-            </div>
-        @endif
-    </div>        
+                </div>        
+        </div>
+    </div>
 </div>
 @endsection
 
