@@ -40,7 +40,6 @@ class SitemapController extends Controller
             ->setPriority(0.1))
             ->add('/')
             ->add('/blog')
-            ->add('/paginas')
             ->add('/noticias')
             ->add('/politica-de-privacidade')
             ->writeToDisk('s3', Str::slug($configupdate->nomedosite) . '_sitemap.xml');

@@ -131,7 +131,7 @@
                 @foreach ($parceiros as $parceiro)
                     <div class="col-lg-3">
                         <div class="post-entry-2 d-flex">
-                            <a href="{{route('web.parceiro',['slug' => $parceiro->slug])}}">
+                            <a href="#">
                                 <img src="{{$parceiro->cover()}}" class="img-fluid">    
                             </a>                    
                         </div>
