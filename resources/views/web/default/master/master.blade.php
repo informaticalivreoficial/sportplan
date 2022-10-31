@@ -83,9 +83,10 @@
                                 <a class="d-inline-block p-3" target="_blank" href="{{$configuracoes->linkedin}}" title="linkedin" ><span class="icon-linkedin"></span></a>
                             @endif
                         </div>
-                        <form action="#" class="search-form d-inline-block">
+                        <form method="post" action="{{route('web.pesquisa')}}" class="search-form d-inline-block">
+                            @csrf
                             <div class="d-flex">
-                                <input type="email" class="form-control" placeholder="Search...">
+                                <input type="text" class="form-control" name="search" value="{{$search ?? ''}}" placeholder="Pesquisar...">
                                 <button type="submit" class="btn btn-secondary"><span class="icon-search"></span></button>
                             </div>
                         </form>
@@ -130,13 +131,16 @@
 
         <div class="footer">
             <div class="container">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <a href="{{route('web.politica')}}">Política de Privacidade</a> |   
+                        <a href="{{route('web.atendimento')}}">Atendimento</a>                      
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="copyright">
-                        <p>
-                            &copy; {{$configuracoes->ano_de_inicio}} - {{date('Y')}} <strong>{{$configuracoes->nomedosite}}</strong>. - Todos os direitos reservados. Feito com <i class="icon-heart text-danger" aria-hidden="true"></i>  por <a target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a>
-
-                        </p>
+                            <p>&copy; {{$configuracoes->ano_de_inicio}} - {{date('Y')}} <strong>{{$configuracoes->nomedosite}}</strong>. - Todos os direitos reservados. Feito com <i class="icon-heart text-danger" aria-hidden="true"></i>  por <a target="_blank" href="{{env('DESENVOLVEDOR_URL')}}">{{env('DESENVOLVEDOR')}}</a></p>
                         </div>
                     </div>
                 </div>
@@ -172,13 +176,13 @@
     </script>
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZW4K12J5XR"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{$configuracoes->tagmanager_id}}"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-ZW4K12J5XR');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', '{{$configuracoes->tagmanager_id}}');
     </script>
 
     @hasSection('js')

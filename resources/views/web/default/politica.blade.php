@@ -1,18 +1,16 @@
 @extends("web.{$configuracoes->template}.master.master")
 
 @section('content')
-<div class="container">
-	<div class="pageContentArea clearfix">
-        <main style="width: 100%;">
-            <article class="single-article clearfix">            	
-                <header>
-                    <h3 style="width: 100%;">Política de Privacidade</h3>                    
-                </header>
-                <div class="row">
-                    <div class="col-sm-12">{!! $configuracoes->politicas_de_privacidade !!}</div>
-                </div>
-            </article>            
-        </main>        
-    </div>      
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 single-content">  
+                <h1 class="mb-4">
+                    Política de Privacidade
+                </h1>               
+                {!! $configuracoes->politicas_de_privacidade !!}
+            </div>
+        </div>      
+    </div>
 </div>
 @endsection

@@ -1,14 +1,15 @@
 @extends("web.{$configuracoes->template}.master.master")
 
 @section('content')
-
 <div class="site-section">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 single-content">          
-                <p class="mb-5">
-                    <img src="{{$post->cover()}}" alt="{{$post->titulo}}" class="img-fluid">
-                </p>  
+            <div class="col-lg-12 single-content">   
+                @if($post->images()->get()->count() > 0)   
+                    <p class="mb-5">
+                        <img src="{{$post->cover()}}" alt="{{$post->titulo}}" class="img-fluid">
+                    </p>
+                @endif
                 <h1 class="mb-4">
                     {{$post->titulo}}
                 </h1>
