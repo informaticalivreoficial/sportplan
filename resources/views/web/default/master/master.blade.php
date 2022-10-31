@@ -102,7 +102,14 @@
                                 <ul class="site-menu main-menu js-clone-nav mr-auto d-none pl-0 d-lg-block">
                                     <li class="active">
                                         <a href="{{route('web.home')}}" class="nav-link text-left">Início</a>
-                                    </li>                                    
+                                    </li>                                      
+                                    @if (!empty($Links) && $Links->count())
+                                        @foreach($Links as $link)
+                                        <li>
+                                            <a {{($link->target == 1 ? 'target="_blank"' : '')}} title="{{$link->titulo}}" href="{{($link->tipo == 'Página' ? route('web.pagina', [ 'slug' => ($link->post != null ? $link->PostObject->slug : '404') ]) : $link->url)}}" class="nav-link text-left">{{$link->titulo}}</a>
+                                        </li>
+                                        @endforeach
+                                    @endif                                   
                                     <li>
                                         <a title="Blog" href="{{route('web.blog.artigos')}}" class="nav-link text-left">Blog</a>
                                     </li>                                    

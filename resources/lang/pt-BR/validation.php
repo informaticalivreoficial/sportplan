@@ -189,6 +189,7 @@ return [
 
         'nasc' => 'data de nascimento',
         'cpf' => 'CPF',
+        'post' => 'Página',
     ],
 
 ];

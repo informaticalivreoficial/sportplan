@@ -2,14 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\CatPost;
-use App\Models\Post;
+use App\Models\Menu;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
-use Goutte\Client;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,18 +35,11 @@ class AppServiceProvider extends ServiceProvider
         $configuracoes = \App\Models\Configuracoes::find(1); 
         View()->share('configuracoes', $configuracoes);
 
-        //Categorias de Notícias
-        $catnoticias = CatPost::where('tipo', 'artigo')
+        //Links
+        $Links = Menu::orderby('created_at', 'DESC')
                         ->available()
-                        ->whereNotNull('id_pai')
                         ->get();
-        View()->share('catnoticias', $catnoticias);
-
-        //Páginas
-        $Paginas = Post::where('tipo', 'pagina')
-                        ->postson()
-                        ->get();
-        View()->share('Paginas', $Paginas);
+        View()->share('Links', $Links);
         
         Paginator::useBootstrap();
     }

@@ -1,53 +1,27 @@
 @extends("web.{$configuracoes->template}.master.master")
 
 @section('content')
-<div class="container">
-	<div class="pageContentArea clearfix">
-        <main style="width: 100%;">
-            <article class="single-article clearfix">
-            	<figure>
-                    <img src="{{$post->cover()}}" alt="{{$post->titulo}}">                                                          
-                </figure>
-                <p>{{$post->thumb_legenda}}</p>
-                <header>
-                    <h3 style="width: 100%;">{{$post->titulo}}</h3>                    
-                </header>
-                <div class="row">
-                    <div class="col-sm-12" style="text-align: center;">                    
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 single-content">          
+                <p class="mb-5">
+                    <img src="{{$post->cover()}}" alt="{{$post->titulo}}" class="img-fluid">
+                </p>  
+                <h1 class="mb-4">
+                    {{$post->titulo}}
+                </h1>
+                <div class="post-meta d-flex mb-5">
+                    <div class="vcard">
                         <div class="shareInner">
                             <!-- Social list -->
                             <div id="shareIcons"></div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">{!!$post->content!!}</div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm-6">                      
-                        <section class="widget widget_author">
-                            <figure>
-                                <img src="{{$post->user->getUrlAvatarAttribute()}}" width="76" height="76" alt="{{$post->user->name}}"/>
-                            </figure>
-                            <h3>{{$post->user->name}}</h3>
-                            <time datetime="{{ Carbon\Carbon::parse($post->created_at)->format('Y-m-d') }}">{{ Carbon\Carbon::parse($post->created_at)->formatLocalized('%d, %B %Y') }}</time>
-                        </section>   
-                    </div>
-                    <div class="col-sm-6">
-                        <section class="widget widget_author">
-                            <!-- INICIO FORMULARIO BOTAO PAGSEGURO -->
-                            <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
-                            <!-- NÃO EDITE OS COMANDOS DAS LINHAS ABAIXO -->
-                            <input type="hidden" name="currency" value="BRL" />
-                            <input type="hidden" name="receiverEmail" value="financeiro@informaticalivre.com" />
-                            <input type="hidden" name="iot" value="button" />
-                            <input type="image" src="https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/120x53-doar.gif" name="submit" alt="Faça uma doação e ajude a manter nosso site" />
-                            </form>
-                            <!-- FINAL FORMULARIO BOTAO PAGSEGURO -->
-                        </section>
-                    </div>
-                </div>
+                <p>{{$post->thumb_legenda}}</p>
+                {!!$post->content!!}
                 @if($post->images()->get()->count()) 
                     <div class="row">                   
                         @foreach($post->images()->get() as $image)  
@@ -60,30 +34,43 @@
                     </div>                               
                 @endif
 
-                @if (!empty($parceiros) && $parceiros->count() > 0)
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <section class="widget widget_author">
-                                <p><b>Parceiros</b></p>
-                                @foreach ($parceiros as $parceiro)
-                                    <a href="{{$parceiro->link}}" target="_blank">
-                                        <img style="margin-bottom:20px;" src="{{$parceiro->cover()}}" title="{{$parceiro->name}}" alt="{{$parceiro->name}}" />
-                                    </a>
-                                @endforeach
-                            </section> 
-                        </div>
+                @if(!empty($postsTags) && $postsTags->count() > 0)  
+                    <div class="pt-5">
+                        <p>
+                            @foreach($postsTags as $posttags) 
+                                @php
+                                    $array = explode(",", $posttags->tags);
+                                    foreach($array as $tags){
+                                        $tag = trim($tags); 
+                                        if($posttags->tipo == 'artigo'){
+                                            echo '<a href="'.route('web.blog.artigo',['slug' => $posttags->slug]).'">';
+                                        }else{
+                                            echo '<a href="'.route('web.noticia',['slug' => $posttags->slug]).'">';
+                                        }    
+                                        echo '#'.$tag;
+                                        echo '</a>, ';
+                                    }
+                                @endphp                                                     
+                            @endforeach 
+                        </p>
                     </div>
-                @endif
-            </article>            
-        </main>        
-    </div>      
+                @endif   
+            </div>
+        </div>      
+    </div>
 </div>
+
 @endsection
 
 @section('css')
     <link rel="stylesheet" href="{{url('frontend/assets/js/jsSocials/jssocials.css')}}" />
     <link rel="stylesheet" href="{{url('frontend/assets/js/jsSocials/jssocials-theme-flat.css')}}" />
     <link rel="stylesheet" href="{{url('frontend/assets/js/shadowbox/shadowbox.css')}}"/>
+    <style>
+        .shareInner a{
+            color: white;
+        }
+    </style>
 @endsection
 
 @section('js')
@@ -97,8 +84,7 @@
 
     <script src="{{url('frontend/assets/js/jsSocials/jssocials.min.js')}}"></script>
     <script>
-        (function ($) {
-            
+        (function ($) {            
             $('#shareIcons').jsSocials({
                 //url: "http://www.google.com",
                 showLabel: false,
