@@ -28,23 +28,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        URL::forceScheme('https');
-        Schema::defaultStringLength(191);
-        Blade::aliasComponent('admin.components.message', 'message');
+        //URL::forceScheme('https');
+    //     Schema::defaultStringLength(191);
+    //     Blade::aliasComponent('admin.components.message', 'message');
 
-	//Newsletter FORM
-        $newsletter = NewsletterCat::where('sistema', 1)->where('status', 1)->get();
-        View()->share('newsletterForm', $newsletter);
+	// //Newsletter FORM
+    //     $newsletter = NewsletterCat::where('sistema', 1)->where('status', 1)->get();
+    //     View()->share('newsletterForm', $newsletter);
 
-        $configuracoes = \App\Models\Configuracoes::find(1); 
-        View()->share('configuracoes', $configuracoes);
+    //     $configuracoes = \App\Models\Configuracoes::find(1); 
+    //     View()->share('configuracoes', $configuracoes);
 
-        //Links
-        $Links = Menu::orderby('created_at', 'DESC')
-                        ->available()
-                        ->get();
-        View()->share('Links', $Links);
+    //     //Links
+    //     $Links = Menu::orderby('created_at', 'DESC')
+    //                     ->available()
+    //                     ->get();
+    //     View()->share('Links', $Links);
         
-        Paginator::useBootstrap();
+    //     Paginator::useBootstrap();
     }
 }
